@@ -1,0 +1,25 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7.0
+
+executors:
+  linux-executor:
+    docker:
+      - image: cimg/node:14.18.0
+
+workflows:
+  build-test-deploy:
+    jobs:
+      - test
+
+jobs:
+  test:
+    executor: linux-executor
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run: npm run lint
+      - run: npm run build
+      - run: npm run test
